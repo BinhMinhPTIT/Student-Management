@@ -9,19 +9,8 @@ const showStudent = async (req, res) => {
 
 const showSortStudent = async (req, res) => {
     try {
-      const students = await Student.find();
-      const sortedStudent = students.sort((a, b) => {
-        const firstNameA = a.firstName.toUpperCase();
-        const firstNameB = b.firstName.toUpperCase();
-        if (firstNameA < firstNameB){
-          return -1;
-        }
-        if (firstNameA > firstNameB){
-          return 1;
-        }
-        return 0;
-      });
-      res.status(StatusCodes.OK).json(sortedStudent);
+      const list = await Student.find().sort("firstName");
+      res.status(StatusCodes.OK).json(list);
     } catch (error) {
       res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
@@ -101,23 +90,10 @@ res.status(StatusCodes.OK).json({ student });
 const findStudentByClassAndSort = async (req, res) => {
   try {
     const {
-      params: { lop: studentClass },
+      params: {lop},
     } = req
-  const students = await Student.find({
-      lop: studentClass,
-  })
-  const sortedStudent = students.sort((a, b) => {
-    const firstNameA = a.firstName.toUpperCase();
-    const firstNameB = b.firstName.toUpperCase();
-    if (firstNameA < firstNameB){
-      return -1;
-    }
-    if (firstNameA > firstNameB){
-      return 1;
-    }
-    return 0;
-  });
-    res.status(StatusCodes.OK).json(sortedStudent);
+    const list = await Student.find(req.params).sort("firstName");
+    res.status(StatusCodes.OK).json(list);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
   }
