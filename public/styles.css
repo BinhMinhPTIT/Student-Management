@@ -1,0 +1,77 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;   
+    width: 80%;  
+}
+
+h1, h2 {
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: black;
+    border-radius: 5px; 
+    cursor: pointer;
+}
+
+.students-container > button:first-child{
+    margin-left: right;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.filter-container {
+    margin: 50px;
+}
+
+.students-container {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}

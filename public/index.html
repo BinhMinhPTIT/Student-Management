@@ -3,30 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Management</title>
-    <link rel="stylesheet" href="../public/styles.css">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Student Management</h1>
+    <h1>Student Management System</h1>
+
+    <div class="form-container">
+        <h2>Add Student</h2>
         <form id="student-form">
-            <input type="text" id="name" placeholder="Name" required>
-            <input type="text" id="role" placeholder="Role" required>
-            <input type="text" id="class" placeholder="Class" required>
-            <button type="submit">Add</button>
+            <input type="hidden" id="studentId">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" required><br>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" required><br>
+
+            <label for="role">Role:</label>
+            <input type="text" id="role" required><br>
+
+            <label for="lop">Class:</label>
+            <input type="text" id="lop" required><br>
+
+            <button type="button" id="addBtn">Add Student</button>
+            <button type="button" id="updateBtn" style="display:none;">Update Student</button>
         </form>
-        <div class="search-card">
-            <input type="text" id="searchName" placeholder="Find by name">
-            <input type="text" id="searchClass" placeholder="Find by class">
-            <button id="searchButton">Add</button>
-        </div>
-        <div class="student-list">
-            <h2>List of students</h2>
-            <ul id="students">
-                <!-- Danh sách sinh viên sẽ được hiển thị ở đây -->
-            </ul>
-        </div>
     </div>
-    <script src="../public/index.js"></script>
+
+    <div class="filter-container">
+        <label for="classFilter">Filter by Class:</label>
+        <input type="text" id="classFilter">
+        <button id="filterBtn">Filter</button>
+    </div>
+
+    <div class="students-container">
+        <h2>Students List</h2>
+        <ul id="students-list"></ul>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
