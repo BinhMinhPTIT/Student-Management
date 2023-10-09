@@ -4,15 +4,11 @@ require('express-async-errors');
 const express = require('express');
 const app = express();
 
-//connectDB
 const connectDB = require('./db/connect');
-
-
-//router
+const authenticateUser = require('./middleware/authentication');
+// routers
 const authRouter = require('./routes/auth');
-const studentsRouter = require('./routes/students');  
-
-
+const studentsRouter = require('./routes/students');
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -20,10 +16,9 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.static('./public'));
 app.use(express.json());
 
-
 // routes
 app.use('/auth', authRouter);
-app.use('/students', studentsRouter);
+app.use('/students', authenticateUser, studentsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

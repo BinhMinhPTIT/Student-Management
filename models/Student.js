@@ -22,8 +22,13 @@ const StudentSchema = new mongoose.Schema(
             required: [true, 'Please provide lop'],
             maxlength: 50,
         },
+        createdBy: {
+            type: mongoose.Types.ObjectId,
+            ref: 'User',
+            required: [true, 'Please provide user'],
+          },
     },
+    { timestamps: true }
 )
-
 
 module.exports = mongoose.model('Student', StudentSchema);

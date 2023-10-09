@@ -103,10 +103,10 @@ async function fetchStudents() {
 // Hiển thị danh sách sinh viên
 function displayStudents(students) {
     studentsList.innerHTML = students.map(student => `
-        <li>${student.lastName} ${student.firstName} - ${student.role} - ${student.lop} 
-            <button onclick="setUpdateMode('${student._id}', '${student.firstName}', '${student.lastName}', 
-            '${student.role}', '${student.lop}')">Edit</button>
-            <button onclick="deleteStudent('${student._id}')">Delete</button>
+        <li class="student-item">
+            ${student.lastName} ${student.firstName} - ${student.role} - ${student.lop} 
+            <button class="edit-button" onclick="setUpdateMode('${student._id}', '${student.firstName}', '${student.lastName}', '${student.role}', '${student.lop}')">Edit</button>
+            <button class="delete-button" onclick="deleteStudent('${student._id}')">Delete</button>
         </li>`
     ).join('');
 }

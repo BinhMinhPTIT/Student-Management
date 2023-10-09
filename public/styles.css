@@ -75,3 +75,26 @@ ul {
 li {
     margin-bottom: 10px;
 }
+
+.student-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.edit-button, .delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: black;
+    border-radius: 5px; 
+    cursor: pointer;
+    float: right;
+}
+
+.edit-button:hover, .delete-button:hover {
+    background-color: #45a049;
+}

@@ -3,12 +3,13 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 
 const showStudent = async (req, res) => {
-    const student = await Student.find({});
+    const student = await Student.find({createdBy: req.user.userId }).sort('createdAt');
     res.status(StatusCodes.OK).json({ student, numberStudent: student.length });
 }
 
 const showSortStudent = async (req, res) => {
     try {
+      req.body.createdBy = req.user.userId;
       const list = await Student.find().sort("firstName");
       res.status(StatusCodes.OK).json(list);
     } catch (error) {
@@ -18,6 +19,7 @@ const showSortStudent = async (req, res) => {
 
 const addStudent = async (req, res) => {
     // res.send('add student');
+    req.body.createdBy = req.user.userId;
     const student = await Student.create(req.body);
     res.status(StatusCodes.CREATED).json({ student });
 }
@@ -26,6 +28,7 @@ const deleteStudent = async (req, res) => {
     // res.send('delete student');
     const {
         params: { id: studentId },
+        user: { userId },
       } = req
     
       const student = await Student.findByIdAndRemove({
@@ -41,6 +44,7 @@ const findStudent = async (req, res) => {
     // res.send('find student');
     const {
         params: { id: studentId },
+        user: { userId },
       } = req
     const student = await Student.findOne({
         _id: studentId,
@@ -55,6 +59,7 @@ const updateStudent = async (req, res) => {
     // res.send('update student');
     const {
         body: { ten, role, lop },
+        user: { userId },
         params: { id: studentId },
       } = req
     
@@ -76,6 +81,7 @@ const findStudentByClass = async (req, res) => {
   // res.send('update student');  
   const {
     params: { lop: studentClass },
+    user: { userId },
   } = req
 const student = await Student.find({
     lop: studentClass,
@@ -91,6 +97,7 @@ const findStudentByClassAndSort = async (req, res) => {
   try {
     const {
       params: {lop},
+      user: { userId },
     } = req
     const list = await Student.find(req.params).sort("firstName");
     res.status(StatusCodes.OK).json(list);
