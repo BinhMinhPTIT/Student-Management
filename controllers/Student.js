@@ -3,8 +3,8 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 
 const showStudent = async (req, res) => {
-    const student = await Student.find({createdBy: req.user.userId }).sort('createdAt');
-    res.status(StatusCodes.OK).json({ student, numberStudent: student.length });
+    const students = await Student.find({createdBy: req.user.userId }).sort('createdAt');
+    res.status(StatusCodes.OK).json({ students, numberStudent: students.length });
 }
 
 const showSortStudent = async (req, res) => {
@@ -83,14 +83,14 @@ const findStudentByClass = async (req, res) => {
     params: { lop: studentClass },
     user: { userId },
   } = req
-const student = await Student.find({
+const students = await Student.find({
     lop: studentClass,
 })
 
-if (!student) {
+if (!students) {
     throw new NotFoundError(`No student with class ${studentClass}`);
 }
-res.status(StatusCodes.OK).json({ student });
+res.status(StatusCodes.OK).json({ students });
 }
 
 const findStudentByClassAndSort = async (req, res) => {

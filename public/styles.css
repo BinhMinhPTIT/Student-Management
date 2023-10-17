@@ -1,20 +1,73 @@
 /* styles.css */
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Poppins",
+    sans-serif;;
     background-color: #f2f2f2;
     margin-left: auto;
     margin-right: auto;
     padding: 0;   
-    width: 80%;  
+    width: 80%;
+
+    --s: 82px; /* control the size */
+    --c1: #b2b2b2;
+    --c2: #ffffff;
+    --c3: #d9d9d9;
+    
+    --_g: var(--c3) 0 120deg,#0000 0;
+    background:
+      conic-gradient(from -60deg at 50% calc(100%/3),var(--_g)),
+      conic-gradient(from 120deg at 50% calc(200%/3),var(--_g)),
+      conic-gradient(from  60deg at calc(200%/3),var(--c3) 60deg,var(--c2) 0 120deg,#0000 0),
+      conic-gradient(from 180deg at calc(100%/3),var(--c1) 60deg,var(--_g)),
+      linear-gradient(90deg,var(--c1)   calc(100%/6),var(--c2) 0 50%,
+                            var(--c1) 0 calc(500%/6),var(--c2) 0);
+    background-size: calc(1.732*var(--s)) var(--s);
 }
 
-h1, h2 {
+h1 {
+    font-family: "Poppins", sans-serif;
+    color: #333;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+h2 {
+    font-family: "Poppins", sans-serif;
     color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+.sidebar {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  /* Rotate first bar */
+  .change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+  }
+  
+  /* Fade out the second bar */
+  .change .bar2 {opacity: 0;}
+  
+  /* Rotate last bar */
+  .change .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+  }
 
 
 .form-container {
@@ -31,6 +84,7 @@ label {
 }
 
 input[type="text"] {
+    font-family: "Poppins",sans-serif;;
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -39,12 +93,22 @@ input[type="text"] {
 }
 
 button {
+    font-family: "Poppins", sans-serif;
     background-color: #4caf50;
     color: white;
     padding: 10px 20px;
     border: black;
     border-radius: 5px; 
     cursor: pointer;
+}
+
+.signOut button {
+    font-family: "Poppins", sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 999;
+    margin: 10px;
 }
 
 .students-container > button:first-child{
@@ -56,7 +120,11 @@ button:hover {
 }
 
 .filter-container {
-    margin: 50px;
+    background-color: #fff; /* Set background color */
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .students-container {

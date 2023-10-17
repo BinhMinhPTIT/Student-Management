@@ -3,6 +3,7 @@ require('express-async-errors');
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const connectDB = require('./db/connect');
 const authenticateUser = require('./middleware/authentication');
@@ -22,6 +23,7 @@ app.use('/students', authenticateUser, studentsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 
