@@ -22,6 +22,16 @@ const StudentSchema = new mongoose.Schema(
             required: [true, 'Please provide lop'],
             maxlength: 50,
         },
+        gpa: {
+            type: Number,
+            required: [true, 'Please provide a gpa'],
+            maxlength: 4,
+        },
+        hometown: {
+            type: String,
+            required: [true, 'Please provide hometown'],
+            maxlength: 20,
+        },
         createdBy: {
             type: mongoose.Types.ObjectId,
             ref: 'User',

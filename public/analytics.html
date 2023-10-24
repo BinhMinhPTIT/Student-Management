@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Management System</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dashboard</title>
+    <link rel="shortcut icon" href="#">
     <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
@@ -22,10 +23,10 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff"> 
-    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="analytics.css">
 </head>
-<body>
 
+<body>
     <button class="open-btn">&equiv; Open Sidebar</button>
     <div class="sidebar">
         <span class="close-btn">&times;</span>
@@ -37,47 +38,47 @@
         </ul>
     </div>
 
-
-    <h1>Student Management System</h1>
-
-    <div class="form-container">
-        <h2>Add Student</h2>
-        <form id="student-form">
-            <input type="hidden" id="studentId">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" required><br>
-
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" required><br>
-
-            <label for="role">Role:</label>
-            <input type="text" id="role" required><br>
-
-            <label for="lop">Class:</label>
-            <input type="text" id="lop" required><br>
-
-            <label for="gpa">GPA:</label>
-            <input type="number" id="gpa" step="0.01" min="0" max="4" required><br>
     
-            <label for="hometown">Hometown:</label>
-            <input type="text" id="hometown" required><br>
+    <h1>Analytics</h1>
+    <div class="container">
+        
+        <div class="filter-container">
+            <label for="classFilter">Filter by Class:</label>
+            <input type="text" id="classFilter" required><br>
+            <button id="filterBtn">Filter</button>
+        </div>
+        <div class="gpa-filter-container">
+            <label for="gpaFilter">Students have gpa higher than:</label>
+            <input type="number" id="gpaFilter" step="0.01" min="0" max="4" required><br>
+            <button id="filterGpaBtn">Filter</button>
+        </div>
 
-            <button type="button" id="addBtn">Add Student</button>
-            <button type="button" id="updateBtn" style="display:none;">Update Student</button>
-        </form>
-    </div>
-
-    <div class="filter-container">
-        <label for="classFilter">Filter by Class:</label>
-        <input type="text" id="classFilter">
-        <button id="filterBtn">Filter</button>
+        
     </div>
 
     <div class="students-container">
         <h2>Students List</h2>
-        <ul id="students-list"></ul>
+        <div class="recentOrders">                     
+                    <table id="students-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Class</th>
+                                <th>GPA</th>
+                                <th>Hometown</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body">                           
+                        </tbody>
+                    </table>
+                </div>
     </div>
+    <h2>Bar Chart</h2>
+    <canvas id="myChart" width="400" height="400"></canvas>
 
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="analytics.js"></script>
 </body>
+
 </html>

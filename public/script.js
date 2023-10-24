@@ -14,7 +14,7 @@ if (accessToken == null) {
     window.location.href = "auth.html";
 }
 
-async function addStudent(firstName, lastName, role, lop) {
+async function addStudent(firstName, lastName, role, lop, gpa, hometown) {
     try {
         const response = await fetch('/students', {
             method: 'POST',
@@ -22,7 +22,7 @@ async function addStudent(firstName, lastName, role, lop) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ firstName, lastName, role, lop })
+            body: JSON.stringify({ firstName, lastName, role, lop, gpa, hometown })
         });
 
         if (response.ok) {
@@ -37,7 +37,7 @@ async function addStudent(firstName, lastName, role, lop) {
     }
 }
 
-async function updateStudent(studentId, firstName, lastName, role, lop) {
+async function updateStudent(studentId, firstName, lastName, role, lop, gpa, hometown) {
     try {
         const response = await fetch(`/students/${studentId}`, {
             method: 'PATCH',
@@ -45,7 +45,7 @@ async function updateStudent(studentId, firstName, lastName, role, lop) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ firstName, lastName, role, lop })
+            body: JSON.stringify({ firstName, lastName, role, lop, gpa, hometown }),
         });
 
         if (response.ok) {
@@ -80,53 +80,6 @@ async function deleteStudent(studentId) {
     }
 }
 
-// async function fetchStudents() {
-//     try {
-//         const response = await fetch(`/students`, {
-//             method: 'GET',
-//             headers: {
-//                 'Authorization': `Bearer ${accessToken}`
-//             }
-//         });
-//         console.log(response);
-
-//         if (response.ok) {
-//             const data = await response.json();
-//             const { students } = data;
-//             console.log(data);
-//             const sortedStudents = students.sort((a, b) => a.firstName.localeCompare(b.firstName));
-//             displayStudents(sortedStudents);
-//         } else {
-//             console.error('Error fetching data from server.');
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// }
-
-// async function filterStudents() {
-//     try {
-//         const classFilter = classFilterInput.value;
-//         const response = await fetch(`/students/find/${classFilter}`, {
-//             method: 'GET',
-//             headers: {
-//                 'Authorization': `Bearer ${accessToken}`
-//             }
-//         });
-
-//         if (response.ok) {
-//             const data = await response.json();
-//             const { students } = data;
-//             console.log(data);
-//             const sortedStudents = students.sort((a, b) => a.firstName.localeCompare(b.firstName));
-//             displayStudents(sortedStudents);
-//         } else {
-//             console.error('Error fetching data from server.');
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// }
 
 async function fetchStudents() {
     try {
@@ -161,8 +114,8 @@ function displayStudents(studentsData) {
     console.log(studentsData);
     studentsList.innerHTML = studentsData.map(student => `
         <li class="student-item">
-            ${student.lastName} ${student.firstName} - ${student.role} - ${student.lop}
-            <button class="edit-button" onclick="setUpdateMode('${student._id}', '${student.firstName}', '${student.lastName}', '${student.role}', '${student.lop}')">Edit</button>
+            ${student.lastName} ${student.firstName} - ${student.role} - ${student.lop} - ${student.gpa} - ${student.hometown}
+            <button class="edit-button" onclick="setUpdateMode('${student._id}', '${student.firstName}', '${student.lastName}', '${student.role}', '${student.lop}', '${student.gpa}', '${student.hometown}')">Edit</button>
             <button class="delete-button" onclick="deleteStudent('${student._id}')">Delete</button>
         </li>`
     ).join('');
@@ -174,16 +127,20 @@ function clearForm() {
     document.getElementById('lastName').value = '';
     document.getElementById('role').value = '';
     document.getElementById('lop').value = '';
+    document.getElementById('gpa').value = '';
+    document.getElementById('hometown').value = '';
     addBtn.style.display = 'block';
     updateBtn.style.display = 'none';
 }
 
-function setUpdateMode(studentId, firstName, lastName, role, lop) {
+function setUpdateMode(studentId, firstName, lastName, role, lop, gpa, hometown) {
     document.getElementById('studentId').value = studentId;
     document.getElementById('firstName').value = firstName;
     document.getElementById('lastName').value = lastName;
     document.getElementById('role').value = role;
     document.getElementById('lop').value = lop;
+    document.getElementById('gpa').value = gpa;
+    document.getElementById('hometown').value = hometown;
     addBtn.style.display = 'none';
     updateBtn.style.display = 'block';
 }
@@ -193,7 +150,9 @@ addBtn.addEventListener('click', function() {
     const lastName = document.getElementById('lastName').value;
     const role = document.getElementById('role').value;
     const lop = document.getElementById('lop').value;
-    addStudent(firstName, lastName, role, lop);
+    const gpa = document.getElementById('gpa').value;
+    const hometown = document.getElementById('hometown').value;
+    addStudent(firstName, lastName, role, lop, gpa, hometown);
 });
 
 updateBtn.addEventListener('click', function() {
@@ -202,7 +161,9 @@ updateBtn.addEventListener('click', function() {
     const lastName = document.getElementById('lastName').value;
     const role = document.getElementById('role').value;
     const lop = document.getElementById('lop').value;
-    updateStudent(studentId, firstName, lastName, role, lop);
+    const gpa = document.getElementById('gpa').value;
+    const hometown = document.getElementById('hometown').value;
+    updateStudent(studentId, firstName, lastName, role, lop, gpa, hometown);
 });
 
 document.getElementById('filterBtn').addEventListener('click', function() {
@@ -213,6 +174,30 @@ document.getElementById('filterBtn').addEventListener('click', function() {
 
 fetchStudents();
 
-function myFunction(x) {
-    x.classList.toggle("change");
-} 
+
+const sidebar = document.querySelector('.sidebar');
+const openBtn = document.querySelector('.open-btn');
+const closeBtn = document.querySelector('.close-btn');
+
+openBtn.addEventListener('click', () => {
+    sidebar.classList.add('opened');
+});
+
+closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('opened');
+});
+
+const analyticsLink = document.querySelector('.sidebar ul li:nth-child(1)');
+analyticsLink.addEventListener('click', function() {
+    window.location.href = "analytics.html";
+});
+
+const applicationLink = document.querySelector('.sidebar ul li:nth-child(2)');
+applicationLink.addEventListener('click', function() {
+    window.location.href = "index.html";
+});
+
+const dashboardLink = document.querySelector('.sidebar ul li:nth-child(3)');
+dashboardLink.addEventListener('click', function() {
+    window.location.href = "dashboard.html";
+});

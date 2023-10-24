@@ -92,9 +92,28 @@ input[type="text"] {
     border-radius: 4px;
 }
 
+input[type="number"] {
+    font-family: "Poppins",sans-serif;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"]#hometown {
+    font-family: "Poppins",sans-serif;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
 button {
     font-family: "Poppins", sans-serif;
-    background-color: #4caf50;
+    background-color: #2a2185;
     color: white;
     padding: 10px 20px;
     border: black;
@@ -116,7 +135,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #161248;
 }
 
 .filter-container {
@@ -155,7 +174,7 @@ li {
 .edit-button, .delete-button {
     margin-left: 10px;
     padding: 5px 10px;
-    background-color: #4caf50;
+    background-color: #2a2185;
     color: white;
     border: black;
     border-radius: 5px; 
@@ -164,5 +183,63 @@ li {
 }
 
 .edit-button:hover, .delete-button:hover {
-    background-color: #45a049;
+    background-color: #161248;
+}
+
+
+.sidebar {
+    width: 0;
+    height: 100vh;
+    background-color: #333;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 70px;
+    transition: 0.5s;
+    overflow-x: hidden;
+}
+
+.sidebar.opened {
+    width: 400px;
+}
+
+.open-btn{
+    position: relative;
+    top: 10px;
+    font-size: 15px;
+}
+
+.close-btn {
+    font-size: 40px;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: red; /* Change color on hover if desired */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    font-family: "Poppins", sans-serif;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sidebar li:hover {
+    background-color: #555;
+}
+.sidebar ul li:nth-child(4){
+    position: relative;
+    background-color: #2a2185;
 }

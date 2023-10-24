@@ -58,12 +58,12 @@ const findStudent = async (req, res) => {
 const updateStudent = async (req, res) => {
     // res.send('update student');
     const {
-        body: { ten, role, lop },
+        body: { ten, role, lop, gpa, hometown },
         user: { userId },
         params: { id: studentId },
       } = req
     
-      if (ten === '' || role === ''|| lop === '') {
+      if (ten === '' || role === ''|| lop === '' || gpa === '' || hometown === '') {
         throw new BadRequestError('Name, Role or Class fields cannot be empty')
       }
       const student = await Student.findByIdAndUpdate(
@@ -105,6 +105,49 @@ const findStudentByClassAndSort = async (req, res) => {
     res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
   }
 }
+const findStudentByGpa = async (req, res) => {
+  try {
+    const {
+      params: { gpa: studentGpa },
+      user: { userId },
+    } = req;
+
+    if (isNaN(studentGpa)) {
+      throw new Error('Invalid GPA value');
+    }
+
+    const students = await Student.find({
+      createdBy: userId,
+      gpa: { $gte: parseFloat(studentGpa) },
+    });
+
+    if (!students || students.length === 0) {
+      throw new NotFoundError(`No students with GPA greater than or equal to ${studentGpa}`);
+    }
+
+    res.status(StatusCodes.OK).json({ students });
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+  }
+};
+
+const getStudentDataForChart = async(req, res) => {
+  try {
+    const students = await Student.find({ createdBy: req.user.userId });
+    // console.log(students);
+    const data = students.map(student => ({
+        name: `${student.lastName} ${student.firstName}`,
+        gpa: student.gpa
+    }));
+    // console.log(data);
+    res.status(StatusCodes.OK).json(data);
+} catch (error) {
+  console.log(error); 
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+}
+}
+
+
 
 module.exports = {
     showStudent,
@@ -115,4 +158,6 @@ module.exports = {
     showSortStudent,
     findStudentByClass,
     findStudentByClassAndSort,
+    findStudentByGpa,
+    getStudentDataForChart,
 }
