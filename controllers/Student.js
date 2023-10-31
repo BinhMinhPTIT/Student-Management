@@ -3,9 +3,30 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 
 const showStudent = async (req, res) => {
-    const students = await Student.find({createdBy: req.user.userId }).sort('createdAt');
-    res.status(StatusCodes.OK).json({ students, numberStudent: students.length });
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 15;
+
+  try {
+      const students = await Student.paginate(
+          { createdBy: req.user.userId },
+          {
+              page: page,
+              limit: limit,
+              sort: { createdAt: 'asc' } 
+          }
+      );
+
+      res.status(StatusCodes.OK).json({
+          students: students.docs,
+          totalPages: students.totalPages,
+          currentPage: students.page,
+          totalStudents: students.totalDocs
+      });
+  } catch (error) {
+      res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+  }
 }
+
 
 const showSortStudent = async (req, res) => {
     try {
@@ -147,6 +168,20 @@ const getStudentDataForChart = async(req, res) => {
 }
 }
 
+const getStudentDataForPieChart = async(req, res) => {
+  try {
+    const students = await Student.find({ createdBy: req.user.userId });
+    // console.log(students);
+    const data = students.map(student => ({
+        lop: student.lop,
+    }));
+    // console.log(data);
+    res.status(StatusCodes.OK).json(data);
+} catch (error) {
+  console.log(error); 
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+}
+}
 
 
 module.exports = {
@@ -160,4 +195,5 @@ module.exports = {
     findStudentByClassAndSort,
     findStudentByGpa,
     getStudentDataForChart,
+    getStudentDataForPieChart
 }

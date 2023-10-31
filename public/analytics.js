@@ -1,4 +1,5 @@
 const ctx = document.getElementById('myChart').getContext('2d');
+const pieChartCanvas = document.getElementById('pieChart').getContext('2d');
 const sidebar = document.querySelector('.sidebar');
 const openBtn = document.querySelector('.open-btn');
 const closeBtn = document.querySelector('.close-btn');
@@ -39,9 +40,9 @@ filterGpaBtn.addEventListener('click', function() {
     fetchStudentByGpa();
 });
 
-async function fetchChartData() {
+async function fetchBarChartData() {
     try {
-        const response = await fetch('/students/chart', {
+        const response = await fetch('/students/chart/barchart', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
@@ -82,15 +83,71 @@ async function fetchChartData() {
     }
 }
 
-fetchChartData();
+async function fetchPieChartData() {
+    try {
+        const response = await fetch('/students/chart/piechart', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
 
+        if (response.ok) {
+            const data = await response.json();
+            const counts = data.reduce((acc, student) => {
+                acc[student.lop] = (acc[student.lop] || 0) + 1;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(counts);
+            const values = Object.values(counts);
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(192, 99, 71, 0.2)',
+                            'rgba(51, 207, 171, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(192, 99, 71, 1)',
+                            'rgba(51, 207, 171, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        } else {
+            console.error('Error fetching pie chart data.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+fetchBarChartData();
+
+fetchPieChartData();
+
+let currentPage = 1;
+const studentsPerPage = 10;
 
 async function fetchStudents() {
     try {
-        let endpoint = '/students';
+        let endpoint = `/students?_page=${currentPage}&_limit=${studentsPerPage}`;
         const classFilter = classFilterInput.value;
         if (classFilter) {
-            endpoint = `/students/find/${classFilter}`;
+            endpoint = `/students/find/${classFilter}?_page=${currentPage}&_limit=${studentsPerPage}`;
         }
 
         const response = await fetch(endpoint, {
@@ -102,10 +159,8 @@ async function fetchStudents() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
             const { students } = data;
-            const sortedStudents = students.sort((a, b) => a.firstName.localeCompare(b.firstName));
-            displayStudents(sortedStudents);
+            displayStudents(students);
         } else {
             console.error('Error fetching data from server.');
         }

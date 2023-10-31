@@ -12,11 +12,13 @@ const {
     findStudentByClassAndSort,
     findStudentByGpa,
     getStudentDataForChart,
+    getStudentDataForPieChart,
 } = require('../controllers/Student');
 
 router.use(authMiddleware);
 
-router.route('/chart').get(getStudentDataForChart);
+router.route('/chart/barchart').get(getStudentDataForChart);
+router.route('/chart/piechart').get(getStudentDataForPieChart);
 router.route('/').post(addStudent).get(showStudent);
 router.route('/sort').get(showSortStudent);
 router.route('/find/:lop').get(findStudentByClass);

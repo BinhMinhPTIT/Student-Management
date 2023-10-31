@@ -1,6 +1,12 @@
 const signOutBtn = document.getElementById('signOutBtn');
 const accessToken = localStorage.getItem('token');
 const searchInput = document.getElementById('searchInput');
+const numStudent = document.getElementById('numStudent');
+const dateTime = document.getElementById('dateTime');
+const currentDate = new Date();
+const paginationContainer = document.getElementById('pagination');
+let currentPage = 1;
+const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
 signOutBtn.addEventListener('click', function() {
   localStorage.removeItem('token');
@@ -47,9 +53,9 @@ dashboardLink.addEventListener('click', function() {
     window.location.href = "dashboard.html";
 });
 
-async function showStudents() {
+async function showStudents(page = 1) {
   try {
-      const response = await fetch('/students', {
+      const response = await fetch(`/students?page=${page}`, {
           method: 'GET',
           headers: {
               'Authorization': `Bearer ${accessToken}`
@@ -58,8 +64,15 @@ async function showStudents() {
 
       if (response.ok) {
           const data = await response.json();
-          const { students } = data;
+          const { students, totalPages, totalStudents } = data;
+          numStudent.textContent = totalStudents;
+          const currentDate = new Date();
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          dateTime.textContent = currentDate.toLocaleDateString(undefined, options);
           displayStudents(students);
+
+          // Hiển thị nút số trang dưới cùng
+          renderPaginationButtons(currentPage, totalPages);
       } else {
           console.error('Error fetching data from server.');
       }
@@ -68,7 +81,23 @@ async function showStudents() {
   }
 }
 
-showStudents();
+function renderPaginationButtons(currentPage, totalPages) {
+  paginationContainer.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+      const button = document.createElement('button');
+      button.textContent = i;
+      button.addEventListener('click', () => {
+          currentPage = i;
+          showStudents(currentPage);
+      });
+      if (i === currentPage) {
+          button.classList.add('active'); // Đánh dấu trang hiện tại
+      }
+      paginationContainer.appendChild(button);
+  }
+}
+
+showStudents(currentPage);
 
 
 
@@ -103,3 +132,34 @@ function displayStudents(studentsData) {
       tableBody.appendChild(row);
   });
 }
+
+var totalData = 100; 
+var dataPerPage = 10; 
+
+var totalPages = Math.ceil(totalData / dataPerPage);
+
+paginationContainer = document.getElementById('pagination');
+
+for (var i = 1; i <= totalPages; i++) {
+  var button = document.createElement('button');
+  button.classList.add('page-btn');
+  button.textContent = i;
+  // button.addEventListener('click', function() {
+  //   var pageButtons = document.querySelectorAll('.page-btn');
+  //   pageButtons.forEach(function(btn) {
+  //     btn.classList.remove('active');
+  //   });
+  //   this.classList.add('active');
+  
+  // });
+
+  paginationContainer.appendChild(button);
+}
+
+button.addEventListener('click', function() {
+  var pageButtons = document.querySelectorAll('#pagination button');
+  pageButtons.forEach(function(btn) {
+      btn.classList.remove('active');
+  });
+  this.classList.add('active');
+});
